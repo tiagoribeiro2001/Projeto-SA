@@ -1,8 +1,8 @@
 #include <ESP8266WiFi.h>
 
 // Replace with your network credentials
-const char* ssid     = "iPhone Duarte";
-const char* password = "benfica37";
+const char* ssid     = "SSID";
+const char* password = "PASSWORD";
 
 // Replace with your server's address
 const char* serverAddress = "your_SERVER_ADDRESS";
