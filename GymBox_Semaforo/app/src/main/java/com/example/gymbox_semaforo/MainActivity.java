@@ -2,9 +2,12 @@ package com.example.gymbox_semaforo;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 
 import android.content.res.AssetManager;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import com.opencsv.CSVReader;
@@ -27,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
         List<String[]> dataRows = readCSV();
 
+
         // Obter a hora atual
         Calendar now = Calendar.getInstance();
         int currentDay = now.get(Calendar.DAY_OF_WEEK);
@@ -41,28 +46,33 @@ public class MainActivity extends AppCompatActivity {
                 || (currentDay == Calendar.SATURDAY && currentHour >= 9 && (currentHour < 18 || (currentHour == 18 && currentMinute == 0)))) {
 
             int entriesCount = 0;
-            for (String[] row : dataRows) {
-                int entryHour = Integer.parseInt(row[7]);    // Supondo que o campo 'hour' é o 8º campo
+            for (int i = 1; i < dataRows.size(); i++) {
+                String[] row = dataRows.get(i);
+                int entryDayOfWeek = getDayOfWeekFromString(row[6]);  // Supondo que o campo 'weekday' é o 7º campo
+                int entryHour = Integer.parseInt(row[7]);             // Supondo que o campo 'hour' é o 8º campo
 
-                // Comparar com a hora atual
-                if (entryHour == currentHour) {
+                // Comparar com o dia da semana e a hora atual
+                if (entryDayOfWeek == currentDay && entryHour == currentHour) {
                     entriesCount++;
                 }
             }
 
             // Definir a cor do semáforo
             String semaphoreColor;
-            if (entriesCount <= 2000) {
-                semaphoreColor = "GREEN";
-            } else if (entriesCount <= 2200) {
+            if (entriesCount >= 2200) {
+                semaphoreColor = "RED";
+            } else if (entriesCount >= 2000) {
                 semaphoreColor = "YELLOW";
             } else {
-                semaphoreColor = "RED";
+                semaphoreColor = "GREEN";
             }
 
             // Definir a cor do semáforo no ImageView
             int colorResId;
             switch (semaphoreColor) {
+                case "GREEN":
+                    colorResId = R.color.green;
+                    break;
                 case "YELLOW":
                     colorResId = R.color.yellow;
                     break;
@@ -73,7 +83,11 @@ public class MainActivity extends AppCompatActivity {
                     colorResId = R.color.green;
                     break;
             }
-            imageViewSemaphore.setColorFilter(ContextCompat.getColor(this, colorResId));
+
+            Drawable drawable = ContextCompat.getDrawable(this, R.drawable.shape_semaphore);
+            DrawableCompat.setTint(drawable, ContextCompat.getColor(this, colorResId));
+            imageViewSemaphore.setImageDrawable(drawable);
+
 
             // Mostrar a mensagem de horário do ginásio
             String gymStatusMessage = "Ginásio aberto";
@@ -93,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
         AssetManager assetManager = getAssets();
 
         try {
-            InputStream csvStream = assetManager.open("yourfile.csv");
+            InputStream csvStream = assetManager.open("datagymbox_treated.csv");
             InputStreamReader csvStreamReader = new InputStreamReader(csvStream);
             CSVReader csvReader = new CSVReader(csvStreamReader);
             String[] nextLine;
@@ -106,5 +120,27 @@ public class MainActivity extends AppCompatActivity {
         }
         return rows;
     }
+
+    private int getDayOfWeekFromString(String weekday) {
+        switch (weekday) {
+            case "Sunday":
+                return Calendar.SUNDAY;
+            case "Monday":
+                return Calendar.MONDAY;
+            case "Tuesday":
+                return Calendar.TUESDAY;
+            case "Wednesday":
+                return Calendar.WEDNESDAY;
+            case "Thursday":
+                return Calendar.THURSDAY;
+            case "Friday":
+                return Calendar.FRIDAY;
+            case "Saturday":
+                return Calendar.SATURDAY;
+            default:
+                return -1;  // Valor inválido
+        }
+    }
+
 
 }
