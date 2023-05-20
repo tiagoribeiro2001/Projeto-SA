@@ -42,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
         int currentHour = now.get(Calendar.HOUR_OF_DAY);
         int currentMinute = now.get(Calendar.MINUTE);
 
-
         // Obtenha as referências dos elementos da interface do usuário
         TextView textViewGymStatus = findViewById(R.id.textViewGymStatus);
         TextView textViewGymStatusMessage = findViewById(R.id.textViewGymStatusMessage);
