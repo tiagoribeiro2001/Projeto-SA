@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Obtenha as referências dos elementos da interface do usuário
         TextView textViewGymStatus = findViewById(R.id.textViewGymStatus);
+        TextView textViewGymStatusMessage = findViewById(R.id.textViewGymStatusMessage);
         ImageView imageViewSemaphore = findViewById(R.id.imageViewSemaphore);
 
         if ((currentDay >= Calendar.MONDAY && currentDay <= Calendar.FRIDAY && currentHour >= 8 && (currentHour < 22 || (currentHour == 22 && currentMinute == 0)))
@@ -95,8 +96,11 @@ public class MainActivity extends AppCompatActivity {
 
 
             // Mostrar a mensagem de horário do ginásio
-            String gymStatusMessage = "Ginásio aberto";
+            String gymStatusMessage = "Ginásio aberto\n";
+            String gymMessage = "A cor apresentada representa a lotação média do ginásio após uma recolha de dados de 2 semanas:\n-> Verde - O ginásio encontra-se pouco populado;\n-> Amarelo - O ginásio tem uma lotação média;\n-> Vermelho - O ginásio tem a lotação quase cheia.";
             textViewGymStatus.setText(gymStatusMessage);
+            textViewGymStatusMessage.setText(gymMessage);
+
 
             // Agora você pode utilizar a variável 'semaphoreColor' para mostrar o semáforo na sua UI
         } else {
@@ -105,8 +109,7 @@ public class MainActivity extends AppCompatActivity {
 
             // Ginásio não está aberto, mostrar mensagem e horário
             String gymClosedMessage = "Ginásio fechado";
-            String gymOpeningHours = "Horário do ginásio:\nSeg-Sex: 8:30h-22:00h\nSáb: 9:00h-18:00h";
-            textViewGymStatus.setText(gymClosedMessage + "\n\n" + gymOpeningHours);
+            textViewGymStatus.setText(gymClosedMessage);
         }
     }
 
