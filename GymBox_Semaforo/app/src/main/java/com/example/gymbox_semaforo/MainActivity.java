@@ -8,6 +8,7 @@ import android.content.res.AssetManager;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -31,12 +32,16 @@ public class MainActivity extends AppCompatActivity {
 
         List<String[]> dataRows = readCSV();
 
+        ImageView imageViewLogo = findViewById(R.id.imageViewLogo);
+        Drawable drawable_logo = ContextCompat.getDrawable(this, R.drawable.logo);
+        imageViewLogo.setImageDrawable(drawable_logo);
 
         // Obter a hora atual
         Calendar now = Calendar.getInstance();
         int currentDay = now.get(Calendar.DAY_OF_WEEK);
         int currentHour = now.get(Calendar.HOUR_OF_DAY);
         int currentMinute = now.get(Calendar.MINUTE);
+
 
         // Obtenha as referências dos elementos da interface do usuário
         TextView textViewGymStatus = findViewById(R.id.textViewGymStatus);
@@ -95,6 +100,9 @@ public class MainActivity extends AppCompatActivity {
 
             // Agora você pode utilizar a variável 'semaphoreColor' para mostrar o semáforo na sua UI
         } else {
+            // Ginásio não está aberto, ocultar o semáforo e mostrar mensagem e horário
+            imageViewSemaphore.setVisibility(View.GONE);
+
             // Ginásio não está aberto, mostrar mensagem e horário
             String gymClosedMessage = "Ginásio fechado";
             String gymOpeningHours = "Horário do ginásio:\nSeg-Sex: 8:30h-22:00h\nSáb: 9:00h-18:00h";
