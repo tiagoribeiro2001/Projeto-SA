@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
 
             // Mostrar a mensagem de horário do ginásio
             String gymStatusMessage = "Ginásio aberto\n";
-            String gymMessage = "A cor apresentada representa a lotação média do ginásio após uma recolha de dados de 2 semanas:\n-> Verde - O ginásio encontra-se pouco populado;\n-> Amarelo - O ginásio tem uma lotação média;\n-> Vermelho - O ginásio tem a lotação quase cheia.";
+            String gymMessage = "A cor apresentada representa a lotação média do ginásio neste momento:\n-> Verde - Pouco populado;\n-> Amarelo - Lotação média;\n-> Vermelho - Lotação quase cheia.";
             textViewGymStatus.setText(gymStatusMessage);
             textViewGymStatusMessage.setText(gymMessage);
 
